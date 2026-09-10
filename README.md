@@ -9,6 +9,9 @@
 * Operational readiness verification prevents access delays and account suspensions prior to taking live client tickets.
 * Understanding Learner Lab boundaries ensures non-disruptive operations and budget compliance.
 
+* <img width="1434" height="675" alt="image" src="https://github.com/user-attachments/assets/6bb5d8c1-4c59-42f4-a7a1-70ff205f9506" />
+
+
 ## AWS Services Involved
 * **AWS IAM:** Verified pre-created `LabRole` and `LabInstanceProfile`.
 * **Amazon S3 & EC2:** Reviewed official documentation for launching virtual machines and managing cloud storage.
@@ -22,6 +25,9 @@
 * **Permitted Regions:** Confirmed operating boundary limited to `us-east-1` and `us-west-2`.
 * **IAM Boundaries:** Confirmed inability to create IAM users or groups.
 * **Session & Reset Rules:** Timer reaching zero ends active session but preserves resources; Reset permanently deletes resources without restoring budget.
+
+* <img width="1520" height="827" alt="image" src="https://github.com/user-attachments/assets/aae104a9-7f71-4b22-b8ff-a90e2b8fdaff" />
+
 
 ## Operational Analysis
 * The Learner Lab provides a restricted sandbox environment requiring careful resource monitoring due to delayed budget reporting.
