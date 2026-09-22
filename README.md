@@ -68,9 +68,7 @@ I tested endpoint reachability by navigating to the S3 website URL in a web brow
 ## Operational Analysis
 Centralized automation is far better suited for multi-instance maintenance than manual administrative logins. Tasks like operating system updates and patch enforcement should be automated via Systems Manager Maintenance Windows and Run Command to guarantee identical configuration across all five instances.
 
-For hardcoded parameters, moving database connection strings to Parameter Store removes sensitivity from application code. However, storing values in Parameter Store requires updating application code to pull variables dynamically via the AWS SDK during runtime.
-
-For web delivery, Amazon S3 is the optimal choice for Bright Path’s current static landing page. Hosting static files on S3 removes the need for web server compute, eliminates OS patching, and reduces hosting costs. If Bright Path eventually adds dynamic user authentication or server-side workflows, the workload can transition to AWS Lambda and API Gateway or an EC2 application tier behind CloudFront.
+For web delivery, Amazon S3 is the best choice for Bright Path’s current static landing page. Hosting static files on S3 removes the need for web server compute, eliminates OS patching, and reduces hosting costs. If Bright Path eventually adds dynamic user authentication or server-side workflows, the workload can transition to AWS Lambda and API Gateway or an EC2 application tier behind CloudFront.
 
 ## Recommendation
 I recommend the following AWS configuration for Bright Path:
