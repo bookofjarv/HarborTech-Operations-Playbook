@@ -3,10 +3,10 @@
 ## HarborTech Ticket Summary
 In TKT-2026-0003, I investigated two operational challenges reported by Bright Path Community Services:
 1. **Unautomated Server Maintenance:** Dana has been manually performing weekly administrative tasks and updates across five individual EC2 instances, leading to operational overhead and consistency risks.
-2. **Unnecessary Infrastructure Overhead:** Bright Path needed a way to host public community resources (program schedules, contact details, downloadable forms). Hosting static files on a dedicated compute server introduces unnecessary maintenance and expense.
+2. **Unnecessary Infrastructure Overhead:** Bright Path needed a way to host public community resources (program schedules, contact details, downloadable forms). Hosting static files on a dedicated compute server introduces unnecessary expenses.
 
 ## Client Impact
-Relying on manual, repetitive administration across multiple servers negatively impacts efficiency, operational consistency, and support agility. Manual updates often lead to human error, missed security patches, and configuration drift across the instance fleet. Additionally, running a dedicated virtual machine for simple static content wastes engineering effort on OS patching and maintenance, diverting time and budget away from Bright Path's core mission.
+Relying on manual, repetitive administration across multiple servers negatively impacts efficiency, and operational consistency. Manual updates often lead to human error as well as missed security patches. Additionally, running a dedicated virtual machine for simple static content wastes engineering effort on OS patching and maintenance, diverting time and budget away from Bright Path's core mission.
 
 ## AWS Services Involved
 - **AWS Systems Manager (SSM):** A centralized operational management service for AWS resources and virtual machines.
@@ -35,27 +35,35 @@ During my investigation, I analyzed several key technical and environment factor
 #### 1. CLI Caller Identity & Execution
 I verified my IAM identity and confirmed execution status in CloudShell using the AWS CLI.
 
-![CLI Identity and Execution Output](./assets/get caller id command.jpeg)
+<img width="883" height="120" alt="get caller id command" src="https://github.com/user-attachments/assets/c3cb9faa-f039-4c5d-971b-522eb1404280" />
+
 
 #### 2. S3 Bucket Object Upload
 I confirmed that `index.html` was successfully uploaded and stored in the root directory of bucket `brightpath-public-site-891432261928`.
 
-![S3 Bucket Objects List](./assets/upload index html object file.jpeg)
+<img width="869" height="162" alt="get bucket policy" src="https://github.com/user-attachments/assets/17ecda54-2fc6-4e85-9a44-f783beae184e" />
+
 
 #### 3. Static Website Hosting Configuration
 I verified that static website hosting was enabled on bucket `brightpath-public-site-891432261928` in region `us-east-1` and noted the live website endpoint URL.
 
-![S3 Static Website Hosting Properties](./assets/static website hosting 2.jpeg)
+<img width="878" height="110" alt="website endpoint" src="https://github.com/user-attachments/assets/cc0eb842-d1b1-4f9b-bf81-72101e98cf7f" />
+
+<img width="925" height="643" alt="static website hosting 2" src="https://github.com/user-attachments/assets/bb8eb968-3b71-4165-8e1f-261d6595d8de" />
+
+
 
 #### 4. Bucket Policy Verification
 I checked the applied bucket policy using the CLI (`aws s3api get-bucket-policy`) to verify public read access permissions (`s3:GetObject`).
 
-![Bucket Policy Verification](./assets/get bucket policy.jpeg)
+<img width="869" height="162" alt="get bucket policy" src="https://github.com/user-attachments/assets/069b7e6f-8e4c-484a-8f9a-f65b57f6a53d" />
+
 
 #### 5. Live Website Access Test
 I tested endpoint reachability by navigating to the S3 website URL in a web browser to verify that the public landing page renders properly.
 
-![Browser Verification](./assets/brightpath website in browser.jpeg)
+<img width="820" height="636" alt="brightpath website in browser" src="https://github.com/user-attachments/assets/7fa25344-544c-4fb6-abf1-5af539fa6c9f" />
+
 
 ## Operational Analysis
 Centralized automation is far better suited for multi-instance maintenance than manual administrative logins. Tasks like operating system updates and patch enforcement should be automated via Systems Manager Maintenance Windows and Run Command to guarantee identical configuration across all five instances.
