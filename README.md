@@ -1,25 +1,53 @@
-# ☁️ HarborTech Operations Playbook
+# Week 4: EC2 Evidence Lab
 
-Welcome to my **HarborTech Operations Playbook**. This repository serves as a live, hands-on portfolio documenting my work, technical analysis, and troubleshooting logs as a **Junior Cloud Operations Intern (Simulation)** for **IT 4560: Introduction to Virtualization** at **Governors State University**.
+## HarborTech Ticket Summary
 
----
-
-## 🎯 Portfolio & Learning Objectives
-
-The goal of this playbook is to bridge the gap between classroom theory and real-world enterprise cloud engineering. Rather than simply completing labs to check boxes, I use this workspace to develop the documentation habits, analytical rigor, and operational discipline required in production cloud environments.
-
-Through scenario-based incident response, environment readiness checks, and virtualization projects, I am focused on mastering:
-* **Operating Boundaries & Constraints:** Understanding AWS sandbox environments (IAM limits, Region restrictions, budget lag, and session lifecycles) before making changes.
-* **Evidence-Based Operations:** Moving beyond "it works" or "it broke" by capturing concrete observations, system logs, CLI output, and network traces.
-* **Authoritative Reference:** Relying on official AWS documentation, whitepapers, and industry standards over memorization to solve complex infrastructure issues.
-* **Professional Escalation & Communication:** Writing clear, actionable incident reports, root-cause analyses (RCAs), and escalation notes that team members and senior engineers can act on immediately.
+* **Ticket ID:** TKT-2026-0004
+* **Client:** Riverside Goods
+* **Assigned Engineer:** Jarvis D. Anderson (`xxxxxxxxxx=Jarvis_D._Anderson`)
+* **AWS Account ID:** `xxxxxxxxxxx`
+* **Target System:** Web Application Host running Apache (`http`) on Amazon Linux 2023
+* **Reported Issue:** External client HTTP requests to the web server fail with connection timeouts.
 
 ---
 
-## 📁 Repository Structure
+## Client Impact
 
-```text
-HarborTech-Operations-Playbook/
-├── README.md
-├── week01-cloud-operations-onboarding.md   # Environment Readiness, Boundaries & Scavenger Hunt
-└── [Upcoming Weekly Playbooks & Incident Reports...]
+Riverside Goods reported that public web traffic cannot reach their web application host. The server is expected to serve standard web content over HTTP on TCP port 80. Because network attempts time out externally, customer-facing services hosted on this instance are completely unreachable, leading to reported downtime for the application.
+
+---
+
+## Environment and Resource Names
+
+* **AWS Region:** `us-east-1`
+* **VPC ID:** `vpc-06ea99072ba96e7ab`
+* **Subnet ID:** `subnet-0d5246aaea2a63874` (`us-east-1a`)
+* **Security Group Name:** `riverside-goods-sg`
+* **Security Group ID:** `sg-0bf2c538893a7e3f8`
+* **Instance ID:** `i-0fffaa16d7d06d3f2`
+* **Instance Type:** `t3.micro`
+* **AMI ID:** `ami-0b245cc5f82576748` (Amazon Linux 2023)
+* **Initial Public IPv4:** `3.91.133.69`
+* **Post-Lifecycle Public IPv4:** `52.91.114.64`
+* **IAM Instance Profile:** `LabInstanceProfile`
+
+---
+
+## AWS Documentation Evidence
+
+1. **AWS Security Group Ingress Behavior:** Security groups act as stateful firewalls at the hypervisor level. By default, newly created security groups allow all outbound traffic but deny all inbound traffic unless explicit ingress rules are configured.
+2. **EC2 Public IPv4 Persistence:** Auto-assigned public IPv4 addresses are tied directly to the instance's network interface lifecycle for its current execution period. When an Amazon EC2 instance backed by Elastic Block Store (EBS) is stopped, the public IPv4 address is released back to Amazon's public IP pool and a new public IPv4 address is assigned upon restarting.
+3. **Instance Metadata Service Version 2 (IMDSv2):** IMDSv2 provides session-oriented authentication to access instance metadata locally at `http://169.254.169.254`. It requires an initial HTTP `PUT` request with a specified TTL header to generate a token before metadata endpoints (such as `/latest/meta-data/instance-id`) can be queried.
+
+---
+
+## CloudShell Command Record
+
+### 1. Identity & Environment Setup
+```bash
+aws sts get-caller-identity
+export AWS_DEFAULT_REGION=$(aws configure get region)
+if [ -z "$AWS_DEFAULT_REGION" ]; then
+  export AWS_DEFAULT_REGION="us-east-1"
+fi
+echo "Operating in Region: $AWS_DEFAULT_REGION"
