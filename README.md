@@ -1,4 +1,4 @@
-===# Week 9: VPC Networking and Troubleshooting
+# Week 9: VPC Networking and Troubleshooting
 
 ## HarborTech Ticket Summary
 HarborTech Ticket TKT-2026-0009 involves a newly deployed web application running on an Amazon EC2 instance (`198.51.100.24`) within VPC `vpc-0a91`. Although the EC2 instance is running and its local service is actively listening on TCP port 80, external internet clients cannot reach the application. Investigation of the partial VPC evidence packet reveals a disconnection between the infrastructure's deployed hardware gateways and its software-defined route configuration.
