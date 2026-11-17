@@ -3,6 +3,9 @@
 ## HarborTech Ticket Summary
 This investigation addresses HarborTech Ticket **TKT-2026-0011** for the client **Riverside Goods**. The client reported sudden website performance degradation following an unannounced change window. Specifically, the web tier Auto Scaling group (ASG) capacity dropped unexpectedly, leaving insufficient resources to handle incoming web traffic and triggering high-latency alarms.
 
+<img width="773" height="638" alt="image" src="https://github.com/user-attachments/assets/49c479f7-3b74-4dd6-9a85-5e8be158001e" />
+
+
 ## Client Impact
 Unapproved infrastructure changes combined with delayed detection directly impact business continuity and customer trust. When capacity changes go undocumented or unmonitored:
 * **Availability Drops:** Under-provisioned web tiers lead to request queuing, high error rates, and connection timeouts.
